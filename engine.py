@@ -26,13 +26,13 @@ class SimEngine:
                 action = process.execute_tick()
                 self.os.handle_action(action)
                 if action == ProcessAction.ISSUE_IO:
-                    print(f"Process {process.name} issued IO at time {self.time}")
+                    print(f"Process {process.pid} issued IO at time {self.time}")
                 elif action == ProcessAction.RUN:
                     process.time_executed += 1
-                    print(f"Process {process.name} ran at time {self.time}, {process.duration - process.time_executed} left")
+                    print(f"Process {process.pid} ran at time {self.time}, {process.duration - process.time_executed} left")
                     if process.time_executed >= process.duration:
                         self.os.terminate_process(process)
-                        print(f"Process {process.name} complete!")
+                        print(f"Process {process.pid} complete!")
 
 
 
