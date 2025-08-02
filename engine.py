@@ -17,7 +17,7 @@ class SimEngine:
         self.os.add_new_processes(self.initial_processes)
 
         while self.time < duration:
-            self.os.check_for_new_processes()
+            self.os.check_for_new_processes(self.time)
             self.os.check_for_io_completion()
             self.os.schedule_next()
             process = self.os.running_process

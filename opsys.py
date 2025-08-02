@@ -5,7 +5,7 @@ class Process:
     def __init__(self,pid, start_time: int = 0, duration: int = 20, prob_io_request: float = 0):
         self.pid = pid
         self.start_time = start_time
-        self.duration = duration
+        self.duration = abs(duration)
         self.time_executed= 0
         self._prob_io_request = prob_io_request
 
@@ -23,7 +23,7 @@ class Process:
     def __str__(self):
         return f"Process {self.pid}, start_time {self.start_time},duration {self.duration}, time executed {self.time_executed}"
 
-
+# TODO: schedulers track ready queue in optimal data structure.
 class Scheduler:
     is_preemptive = False
     def schedule(self, ready_processes: list[Process]):
@@ -41,7 +41,7 @@ class PSJFScheduler(Scheduler):
 
 class FIFOScheduler(Scheduler):
     def schedule(self, ready_processes: list[Process]):
-        return ready_processes[0]
+        return min(ready_processes, key=lambda p: p.start_time)
 
 
 class OperatingSystem:
@@ -66,10 +66,11 @@ class OperatingSystem:
         for process in processes:
             self.processes[ProcessState.NEW].append(process)
 
-    def check_for_new_processes(self):
+    def check_for_new_processes(self, current_time):
         for process in self.processes[ProcessState.NEW][:]:
-            self.processes[ProcessState.NEW].remove(process)
-            self.processes[ProcessState.READY].append(process)
+            if process.start_time == current_time:
+                self.processes[ProcessState.NEW].remove(process)
+                self.processes[ProcessState.READY].append(process)
 
     def check_for_io_completion(self):
         # 1/5 chance of io being completed each tick
