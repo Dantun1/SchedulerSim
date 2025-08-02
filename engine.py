@@ -6,10 +6,10 @@ from opsys import OperatingSystem, Process
 
 
 class SimEngine:
-    def __init__(self, initial_processes: Optional[list[Process]] = None):
+    def __init__(self, opsys: OperatingSystem = OperatingSystem(), initial_processes: Optional[list[Process]] = None):
         if initial_processes is None:
             initial_processes = []
-        self.os: OperatingSystem = OperatingSystem()
+        self.os = opsys
         self.initial_processes: list[Process] = initial_processes
         self.time: int = 0
 
